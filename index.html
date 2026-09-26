@@ -231,6 +231,8 @@
       <tr><td>人員分工</td><td>你 — config switch port ／ Vendor 工程師 — 換線</td></tr>
       <tr><td>Core Switch</td><td><span class="badge badge-core">sw101</span> — 故障 Port: <strong>ethernet 1/1/6</strong></td></tr>
       <tr><td>Access Switch</td><td><span class="badge badge-access">sw306</span> — 故障 Port: <strong>ethernet 1/1/25</strong></td></tr>
+      <tr><td>sw101 位置</td><td><strong>Rack G4-F07-U42</strong></td></tr>
+      <tr><td>sw306 位置</td><td><strong>Rack G4-F09-U44</strong></td></tr>
       <tr><td>問題</td><td>該 port pair 持續 up/down flapping</td></tr>
       <tr><td>Redundancy</td><td>sw101 ↔ sw306 之間有兩條線，更換其中故障的一條</td></tr>
       <tr><td>Port Channel</td><td>channel-group 13, mode active (LACP)</td></tr>
@@ -305,15 +307,17 @@ Data Center Laptop
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-body">
-        <p>與 Vendor 工程師一起到機櫃前，確認 <strong>sw306</strong> 及 <strong>sw101</strong> 的實體位置</p>
+        <p>與 Vendor 工程師一起到機櫃前，確認 <strong>sw306</strong> 及 <strong>sw101</strong> 的實體位置：</p>
+        <p>• <strong>sw101</strong>（Core Switch）— Rack <strong>G4-F07-U42</strong></p>
+        <p>• <strong>sw306</strong>（Access Switch）— Rack <strong>G4-F09-U44</strong></p>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-body">
         <p>確認需要更換的那條網線：</p>
-        <p>• sw306 端：<strong>ethernet 1/1/25</strong></p>
-        <p>• sw101 端：<strong>ethernet 1/1/6</strong></p>
+        <p>• sw306 端（G4-F09-U44）：<strong>ethernet 1/1/25</strong></p>
+        <p>• sw101 端（G4-F07-U42）：<strong>ethernet 1/1/6</strong></p>
       </div>
     </div>
     <div class="step">
@@ -559,7 +563,9 @@ Data Center Laptop
     <h3>現場確認</h3>
     <ul class="checklist">
       <li>與 Vendor 工程師確認 sw306 及 sw101 實體位置</li>
-      <li>確認故障網線：sw306 1/1/25 ↔ sw101 1/1/6</li>
+      <li>sw101 (Core) — Rack G4-F07-U42</li>
+      <li>sw306 (Access) — Rack G4-F09-U44</li>
+      <li>確認故障網線：sw306 1/1/25 (G4-F09-U44) ↔ sw101 1/1/6 (G4-F07-U42)</li>
       <li>確認是故障的那條線，非另一條 redundancy 線</li>
     </ul>
 

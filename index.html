@@ -212,9 +212,22 @@
     .header { box-shadow: none; }
     .info-card { box-shadow: none; }
   }
+
+  /* Print mode (via ?print=1) — forces all tabs visible before render */
+  body.print-mode { background: white; padding: 0; }
+  body.print-mode .tabs { display: none; }
+  body.print-mode .tab-content { display: block !important; page-break-after: always; box-shadow: none; border-radius: 0; margin-bottom: 24px; border: 1px solid #e2e8f0; padding: 28px; }
+  body.print-mode .header { box-shadow: none; }
+  body.print-mode .info-card { box-shadow: none; }
 </style>
 </head>
 <body>
+<script>
+  // 在渲染前檢查 ?print=1，立即加上 print-mode class，確保所有分頁內容都可見
+  if (location.search.indexOf('print=1') !== -1) {
+    document.body.className += ' print-mode';
+  }
+</script>
 <div class="container">
 
   <!-- Header -->

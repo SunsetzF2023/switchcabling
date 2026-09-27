@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>周一 Data Center Cabling Replacement 工作流程</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", "Microsoft JhengHei", "PingFang TC", sans-serif;
+    background: white;
+    color: #1a1a1a;
+    line-height: 1.6;
+    padding: 20px;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1e3a5f, #2c5282);
+    color: white;
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+  }
+  .header h1 { font-size: 22px; margin-bottom: 8px; }
+  .header .subtitle { font-size: 13px; opacity: 0.85; }
+
+  /* Info Table */
+  .info-card {
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .info-card h2 {
+    font-size: 18px;
+    color: #1e3a5f;
+    margin-bottom: 14px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 8px;
+  }
+  .info-table { width: 100%; border-collapse: collapse; }
+  .info-table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 13px;
+  }
+  .info-table td:first-child {
+    font-weight: 600;
+    color: #4a5568;
+    width: 30%;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge-core { background: #ebf4ff; color: #3182ce; }
+  .badge-access { background: #f0fff4; color: #38a169; }
+
+  /* Section (replaces tab-content, always visible) */
+  .section {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    page-break-inside: avoid;
+  }
+  .section.page-break { page-break-before: always; }
+  .section h2 {
+    font-size: 19px;
+    color: #1e3a5f;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  .section h3 {
+    font-size: 15px;
+    color: #2d3748;
+    margin: 18px 0 8px 0;
+  }
+
+  /* Steps */
+  .step {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed #e2e8f0;
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    background: #1e3a5f;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .step-body { flex: 1; }
+  .step-body p { margin-bottom: 6px; font-size: 13px; }
+
+  /* Code Block */
+  .code-block {
+    background: #1a202c;
+    color: #e2e8f0;
+    padding: 14px;
+    border-radius: 8px;
+    font-family: "Cascadia Code", "Consolas", "Courier New", monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    margin: 8px 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .code-block .cmd { color: #63b3ed; }
+  .code-block .prompt { color: #68d391; }
+  .code-block .comment { color: #718096; }
+
+  /* Callout */
+  .callout {
+    border-left: 4px solid;
+    padding: 10px 14px;
+    border-radius: 0 8px 8px 0;
+    margin: 10px 0;
+    font-size: 13px;
+  }
+  .callout-info { background: #ebf8ff; border-color: #3182ce; }
+  .callout-warn { background: #fffaf0; border-color: #dd6b20; }
+  .callout-danger { background: #fff5f5; border-color: #e53e3e; }
+  .callout-success { background: #f0fff4; border-color: #38a169; }
+  .callout strong { display: block; margin-bottom: 4px; }
+
+  /* Network Diagram */
+  .diagram {
+    background: #f7fafc;
+    border: 2px dashed #cbd5e0;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    margin: 12px 0;
+    font-family: monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+  }
+
+  /* Checklist */
+  .checklist { list-style: none; }
+  .checklist li {
+    padding: 6px 0 6px 26px;
+    position: relative;
+    font-size: 13px;
+  }
+  .checklist li::before {
+    content: "☐";
+    position: absolute;
+    left: 0;
+    font-size: 16px;
+    color: #1e3a5f;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>周一 Data Center Cabling Replacement 工作流程</h1>
+    <div class="subtitle">SW101 (Core) ↔ SW306 (Access) 故障網線更換 | 日期：周一早上 | 地點：Data Center</div>
+  </div>
+
+  <!-- Basic Info -->
+  <div class="info-card">
+    <h2>📋 基本資訊</h2>
+    <table class="info-table">
+      <tr><td>任務</td><td>更換 sw101 ↔ sw306 之間 flapping 的網線，分析是否為問題來源</td></tr>
+      <tr><td>人員分工</td><td>你 — config switch port ／ Vendor 工程師 — 換線</td></tr>
+      <tr><td>Core Switch</td><td><span class="badge badge-core">sw101</span> — 故障 Port: <strong>ethernet 1/1/6</strong></td></tr>
+      <tr><td>Access Switch</td><td><span class="badge badge-access">sw306</span> — 故障 Port: <strong>ethernet 1/1/25</strong></td></tr>
+      <tr><td>sw101 位置</td><td><strong>Rack G4-F07-U42</strong></td></tr>
+      <tr><td>sw306 位置</td><td><strong>Rack G4-F09-U44</strong></td></tr>
+      <tr><td>問題</td><td>該 port pair 持續 up/down flapping</td></tr>
+      <tr><td>Redundancy</td><td>sw101 ↔ sw306 之間有兩條線，更換其中故障的一條</td></tr>
+      <tr><td>Port Channel</td><td>channel-group 13, mode active (LACP)</td></tr>
+      <tr><td>登入帳號</td><td>jeff.fan-a</td></tr>
+    </table>
+  </div>
+
+  <!-- Section 1: Network Environment -->
+  <div class="section page-break">
+    <h2>① 網路環境準備</h2>
+    <div class="callout callout-danger">
+      <strong>⚠️ Senior 同事指示</strong>
+      不能直接用 data center 的 laptop 直連 data center production 的 VPN，必須繞道 office 電腦。
+    </div>
+    <h3>連線路徑</h3>
+    <div class="diagram">Data Center Laptop
+  │
+  └─ Remote Connect ──→ Office 電腦
+                          │
+                          └─ Fortinet VPN (data center production, site-to-site)
+                               │
+                               └─ 遠端訪問 Data Center 網絡環境
+                                    │
+                                    └─ SSH 連線至 sw101 / sw306</div>
+    <h3>操作步驟</h3>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><p>在 Data Center 的 laptop 上，remote connect 到 Office 的電腦</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><p>在 Office 電腦上連接 Fortinet VPN，選擇 <strong>data center production</strong> profile（office ↔ data center site-to-site VPN）</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><p>VPN 連線成功後，Office 電腦即可遠端訪問 Data Center 網絡環境</p><p>打開 <strong>cmd</strong>，準備 SSH 連線至 switch</p></div>
+    </div>
+    <div class="callout callout-info">
+      <strong>📌 備註</strong>
+      確認 VPN 連線穩定後再開始 switch 操作，避免操作中途斷線。
+    </div>
+  </div>
+
+  <!-- Section 2: On-site Confirmation -->
+  <div class="section page-break">
+    <h2>② 現場確認</h2>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <p>與 Vendor 工程師一起到機櫃前，確認 <strong>sw306</strong> 及 <strong>sw101</strong> 的實體位置：</p>
+        <p>• <strong>sw101</strong>（Core Switch）— Rack <strong>G4-F07-U42</strong></p>
+        <p>• <strong>sw306</strong>（Access Switch）— Rack <strong>G4-F09-U44</strong></p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <p>確認需要更換的那條網線：</p>
+        <p>• sw306 端（G4-F09-U44）：<strong>ethernet 1/1/25</strong></p>
+        <p>• sw101 端（G4-F07-U42）：<strong>ethernet 1/1/6</strong></p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <p>與 Vendor 工程師確認兩端 port 的實體位置及網線走向，確保拔對線</p>
+        <div class="callout callout-warn">
+          <strong>⚠️ 注意</strong>
+          兩條 redundancy 線外觀可能相似，務必確認是故障的那條，不要拔錯另一條正常運作中的線。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Shutdown -->
+  <div class="section page-break">
+    <h2>③ Shutdown 兩端 Port（換線前）</h2>
+    <div class="callout callout-warn">
+      <strong>順序：先 sw306（Access），再 sw101（Core）</strong>
+    </div>
+    <h3>B1. SSH 登入 sw306 並 shutdown port 25</h3>
+    <div class="code-block"><span class="comment"># 在 cmd 中輸入</span>
+<span class="cmd">ssh jeff.fan-a@sw306.hkedcity.net</span>
+<span class="comment"># 輸入密碼登入（Dell switch 會顯示大量說明資訊）</span>
+
+<span class="prompt">sw306#</span> enable
+<span class="prompt">sw306#</span> show running-configuration interface ethernet 1/1/25
+
+<span class="comment"># 預期看到：</span>
+<span class="comment"># interface ethernet1/1/25</span>
+<span class="comment">#  description "sw101 1/1/6"</span>
+<span class="comment">#  no shutdown</span>
+<span class="comment">#  channel-group 13 mode active</span>
+<span class="comment">#  no switchport</span>
+<span class="comment">#  flowcontrol receive on</span>
+
+<span class="prompt">sw306#</span> configure terminal
+<span class="prompt">sw306(config)#</span> interface ethernet 1/1/25
+<span class="prompt">sw306(conf-if-eth1/1/25)#</span> shutdown
+
+<span class="comment"># 確認 configuration 層面已關閉</span>
+<span class="prompt">sw306(conf-if-eth1/1/25)#</span> show running-configuration interface ethernet 1/1/25
+<span class="comment"># 確認顯示 "shutdown"（而非 "no shutdown"）</span>
+
+<span class="prompt">sw306(conf-if-eth1/1/25)#</span> exit
+<span class="prompt">sw306(config)#</span> exit</div>
+    <div class="callout callout-success">
+      <strong>✅ 現場確認</strong>
+      到機櫃前確認 sw306 port 1/1/25 的燈<strong>不亮</strong>
+    </div>
+    <h3>B2. SSH 登入 sw101 並 shutdown port 6</h3>
+    <div class="code-block"><span class="comment"># 在 cmd 中輸入</span>
+<span class="cmd">ssh jeff.fan-a@sw101.hkedcity.net</span>
+<span class="comment"># 輸入密碼登入</span>
+
+<span class="prompt">sw101#</span> enable
+<span class="prompt">sw101#</span> show running-configuration interface ethernet 1/1/6
+
+<span class="prompt">sw101#</span> configure terminal
+<span class="prompt">sw101(config)#</span> interface ethernet 1/1/6
+<span class="prompt">sw101(conf-if-eth1/1/6)#</span> shutdown
+
+<span class="comment"># 確認 configuration 層面已關閉</span>
+<span class="prompt">sw101(conf-if-eth1/1/6)#</span> show running-configuration interface ethernet 1/1/6
+<span class="comment"># 確認顯示 "shutdown"（而非 "no shutdown"）</span>
+
+<span class="prompt">sw101(conf-if-eth1/1/6)#</span> exit
+<span class="prompt">sw101(config)#</span> exit</div>
+    <div class="callout callout-success">
+      <strong>✅ 現場確認</strong>
+      到機櫃前確認 sw101 port 1/1/6 的燈<strong>不亮</strong>
+    </div>
+    <div class="callout callout-danger">
+      <strong>⛔ 關鍵檢查點</strong>
+      兩個 port 的燈都確認不亮後，才通知 Vendor 工程師拔線更換！
+    </div>
+  </div>
+
+  <!-- Section 4: Cable Replacement -->
+  <div class="section page-break">
+    <h2>④ 換線</h2>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><p>確認兩端 port 燈都不亮後，通知 Vendor 工程師開始拔線</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <p>Vendor 工程師拔除舊網線，安裝新網線</p>
+        <p>• sw306 端接回 <strong>ethernet 1/1/25</strong></p>
+        <p>• sw101 端接回 <strong>ethernet 1/1/6</strong></p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <p>確認新網線兩端都已插好、接頭牢固</p>
+        <div class="callout callout-info">
+          <strong>📌 備註</strong>
+          此時 port 仍處於 shutdown 狀態，燈不亮是正常的。需等下一步用 cmd 啟動。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: Startup -->
+  <div class="section page-break">
+    <h2>⑤ Startup 兩端 Port（換線後）</h2>
+    <div class="callout callout-warn">
+      <strong>順序：先 sw101（Core），再 sw306（Access）— 與 shutdown 相反</strong>
+    </div>
+    <h3>D1. SSH 登入 sw101 並 no shutdown port 6</h3>
+    <div class="code-block"><span class="comment"># 在 cmd 中輸入</span>
+<span class="cmd">ssh jeff.fan-a@sw101.hkedcity.net</span>
+<span class="comment"># 輸入密碼登入</span>
+
+<span class="prompt">sw101#</span> enable
+<span class="prompt">sw101#</span> configure terminal
+<span class="prompt">sw101(config)#</span> interface ethernet 1/1/6
+<span class="prompt">sw101(conf-if-eth1/1/6)#</span> no shutdown
+
+<span class="comment"># 確認 configuration 層面已啟動</span>
+<span class="prompt">sw101(conf-if-eth1/1/6)#</span> show running-configuration interface ethernet 1/1/6
+<span class="comment"># 確認顯示 "no shutdown"</span>
+
+<span class="prompt">sw101(conf-if-eth1/1/6)#</span> exit
+<span class="prompt">sw101(config)#</span> exit</div>
+    <div class="callout callout-success">
+      <strong>✅ 現場確認</strong>
+      到機櫃前確認 sw101 port 1/1/6 的燈<strong>亮起</strong>
+    </div>
+    <h3>D2. SSH 登入 sw306 並 no shutdown port 25</h3>
+    <div class="code-block"><span class="comment"># 在 cmd 中輸入</span>
+<span class="cmd">ssh jeff.fan-a@sw306.hkedcity.net</span>
+<span class="comment"># 輸入密碼登入</span>
+
+<span class="prompt">sw306#</span> enable
+<span class="prompt">sw306#</span> configure terminal
+<span class="prompt">sw306(config)#</span> interface ethernet 1/1/25
+<span class="prompt">sw306(conf-if-eth1/1/25)#</span> no shutdown
+
+<span class="comment"># 確認 configuration 層面已啟動</span>
+<span class="prompt">sw306(conf-if-eth1/1/25)#</span> show running-configuration interface ethernet 1/1/25
+<span class="comment"># 確認顯示 "no shutdown"</span>
+
+<span class="prompt">sw306(conf-if-eth1/1/25)#</span> exit
+<span class="prompt">sw306(config)#</span> exit</div>
+    <div class="callout callout-success">
+      <strong>✅ 現場確認</strong>
+      到機櫃前確認 sw306 port 1/1/25 的燈<strong>亮起</strong>
+    </div>
+    <h3>D3. 確認兩端 Port 都正常著燈</h3>
+    <div class="callout callout-danger">
+      <strong>⛔ 關鍵檢查點</strong>
+      確認 sw101 port 1/1/6 及 sw306 port 1/1/25 兩個 port 的燈都正常亮起，才進入收尾階段。
+    </div>
+  </div>
+
+  <!-- Section 6: Wrap-up -->
+  <div class="section page-break">
+    <h2>⑥ 收尾與驗證</h2>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><p>確認兩個 port 都正常著燈後，聯繫 Office 同事，告知換線已成功完成</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <p>觀察一段時間，確認 flapping 問題是否消失</p>
+        <p>可在 switch 上查看 interface 狀態：</p>
+        <div class="code-block"><span class="prompt">sw306#</span> show interface ethernet 1/1/25
+<span class="prompt">sw101#</span> show interface ethernet 1/1/6</div>
+        <p>確認 link state 穩定為 <strong>up</strong>，不再出現 up/down 反復橫跳</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <p>檢查 Port Channel 13 狀態（因為該 port 屬於 channel-group 13, LACP active mode）</p>
+        <div class="code-block"><span class="prompt">sw306#</span> show interfaces port-channel 13
+<span class="prompt">sw101#</span> show interfaces port-channel 13</div>
+        <p>確認 port-channel 13 正常運作，兩條 redundancy 線都在聚合群組中</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <p>分析結論：</p>
+        <p>• 若 flapping 消失 → <strong>確認該網線就是問題來源</strong></p>
+        <p>• 若 flapping 仍存在 → 問題可能在 port 本身或其他因素，需進一步排查</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <p>登出 switch：</p>
+        <div class="code-block"><span class="prompt">sw306#</span> exit
+<span class="prompt">sw101#</span> exit</div>
+        <p>斷開 VPN 連線，關閉 remote session</p>
+      </div>
+    </div>
+    <div class="callout callout-success">
+      <strong>🎉 完成</strong>
+      工作流程全部完成，記錄本次操作結果供後續參考。
+    </div>
+  </div>
+
+  <!-- Section 7: Checklist -->
+  <div class="section page-break">
+    <h2>✅ 完整 Checklist</h2>
+    <p style="margin-bottom:14px; color:#718096; font-size:13px;">列印此頁隨身攜帶，每步完成後打勾。</p>
+
+    <h3>網路環境準備</h3>
+    <ul class="checklist">
+      <li>Remote connect 到 Office 電腦</li>
+      <li>Office 電腦連接 Fortinet VPN（data center production）</li>
+      <li>VPN 連線成功，可遠端訪問 Data Center</li>
+      <li>打開 cmd，準備 SSH</li>
+    </ul>
+
+    <h3>現場確認</h3>
+    <ul class="checklist">
+      <li>與 Vendor 工程師確認 sw306 及 sw101 實體位置</li>
+      <li>sw101 (Core) — Rack G4-F07-U42</li>
+      <li>sw306 (Access) — Rack G4-F09-U44</li>
+      <li>確認故障網線：sw306 1/1/25 (G4-F09-U44) ↔ sw101 1/1/6 (G4-F07-U42)</li>
+      <li>確認是故障的那條線，非另一條 redundancy 線</li>
+    </ul>
+
+    <h3>Shutdown（換線前）</h3>
+    <ul class="checklist">
+      <li>SSH 登入 sw306（ssh jeff.fan-a@sw306.hkedcity.net）</li>
+      <li>sw306: show running-configuration interface ethernet 1/1/25（記錄原始狀態）</li>
+      <li>sw306: configure → interface ethernet 1/1/25 → shutdown</li>
+      <li>sw306: show running-configuration 確認顯示 shutdown</li>
+      <li>現場確認 sw306 port 25 燈不亮 ☐</li>
+      <li>SSH 登入 sw101（ssh jeff.fan-a@sw101.hkedcity.net）</li>
+      <li>sw101: show running-configuration interface ethernet 1/1/6（記錄原始狀態）</li>
+      <li>sw101: configure → interface ethernet 1/1/6 → shutdown</li>
+      <li>sw101: show running-configuration 確認顯示 shutdown</li>
+      <li>現場確認 sw101 port 6 燈不亮 ☐</li>
+      <li><strong>兩端燈都不亮，通知 Vendor 工程師拔線</strong></li>
+    </ul>
+
+    <h3>換線</h3>
+    <ul class="checklist">
+      <li>Vendor 工程師拔除舊網線</li>
+      <li>Vendor 工程師安裝新網線（兩端接好）</li>
+      <li>確認新網線接頭牢固</li>
+    </ul>
+
+    <h3>Startup（換線後）</h3>
+    <ul class="checklist">
+      <li>SSH 登入 sw101</li>
+      <li>sw101: configure → interface ethernet 1/1/6 → no shutdown</li>
+      <li>sw101: show running-configuration 確認顯示 no shutdown</li>
+      <li>現場確認 sw101 port 6 燈亮起 ☐</li>
+      <li>SSH 登入 sw306</li>
+      <li>sw306: configure → interface ethernet 1/1/25 → no shutdown</li>
+      <li>sw306: show running-configuration 確認顯示 no shutdown</li>
+      <li>現場確認 sw306 port 25 燈亮起 ☐</li>
+      <li><strong>兩端燈都正常亮起</strong></li>
+    </ul>
+
+    <h3>收尾與驗證</h3>
+    <ul class="checklist">
+      <li>聯繫 Office 同事，告知換線成功</li>
+      <li>show interface 確認 link state 穩定 up</li>
+      <li>show interfaces port-channel 13 確認 LACP 正常</li>
+      <li>觀察一段時間，確認 flapping 消失</li>
+      <li>記錄分析結論（網線是否為問題來源）</li>
+      <li>登出 switch，斷開 VPN，關閉 remote session</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>

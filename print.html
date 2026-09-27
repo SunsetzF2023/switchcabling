@@ -276,9 +276,11 @@
 <span class="comment"># 輸入密碼登入（Dell switch 會顯示大量說明資訊）</span>
 
 <span class="prompt">sw306#</span> enable
+<span class="prompt">sw306#</span> show running-configuration
 <span class="prompt">sw306#</span> show running-configuration interface ethernet 1/1/25
 
 <span class="comment"># 預期看到：</span>
+<span class="comment"># !</span>
 <span class="comment"># interface ethernet1/1/25</span>
 <span class="comment">#  description "sw101 1/1/6"</span>
 <span class="comment">#  no shutdown</span>
@@ -306,6 +308,7 @@
 <span class="comment"># 輸入密碼登入</span>
 
 <span class="prompt">sw101#</span> enable
+<span class="prompt">sw101#</span> show running-configuration
 <span class="prompt">sw101#</span> show running-configuration interface ethernet 1/1/6
 
 <span class="prompt">sw101#</span> configure terminal
